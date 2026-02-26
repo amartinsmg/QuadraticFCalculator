@@ -1,5 +1,6 @@
-import Quadratic from "./quadratic";
 import Calculator from "./calculator";
+import Quadratic from "./quadratic";
+import LatexFormatter from "./latex-formatter";
 
 declare const MathJax: any, Plotly: any;
 
@@ -34,9 +35,9 @@ class QFCalculator extends Calculator {
 
   protected static formatInputsValues(els: HTMLInputElement[]): string[] {
     return els.map((el) => {
-      const VALUE = QFCalculator.getInputValue(el);
-      if (VALUE.match(/\d*[.]\d/)) return `${parseFloat(VALUE) * 1e17}/${1e17}`;
-      else return VALUE;
+      const value = QFCalculator.getInputValue(el);
+      if (value.match(/\d*[.]\d/)) return `${parseFloat(value) * 1e17}/${1e17}`;
+      else return value;
     });
   }
 
@@ -64,25 +65,25 @@ class QFCalculator extends Calculator {
     rootsDivSelector: string,
     coordinatesDivSelector: string,
     graphDivSelector: string,
-    errorFeedbackDivSelector: string
+    errorFeedbackDivSelector: string,
   ) {
     super();
-    const FormulaDiv = document.querySelector(formulaSelector) as HTMLElement,
-      InputsElements = inputsSelectors.map(
-        (selector) => document.querySelector(selector) as HTMLInputElement
+    const formulaDiv = document.querySelector(formulaSelector) as HTMLElement,
+      inputsElements = inputsSelectors.map(
+        (selector) => document.querySelector(selector) as HTMLInputElement,
       ),
-      Form = document.querySelector(formSelector) as HTMLFormElement,
+      form = document.querySelector(formSelector) as HTMLFormElement,
       OutputElement = document.querySelector(outputSelector) as HTMLElement,
-      OutputHeadings = document.querySelectorAll(
-        outputHsSelctor
+      outputHeadings = document.querySelectorAll(
+        outputHsSelctor,
       ) as NodeListOf<HTMLElement>,
-      RootsDiv = document.querySelector(rootsDivSelector) as HTMLElement,
-      CoordinatesDiv = document.querySelector(
-        coordinatesDivSelector
+      rootsDiv = document.querySelector(rootsDivSelector) as HTMLElement,
+      coordinatesDiv = document.querySelector(
+        coordinatesDivSelector,
       ) as HTMLElement,
-      GraphDiv = document.querySelector(graphDivSelector) as HTMLElement,
-      ErrorFeedbackDiv = document.querySelector(
-        errorFeedbackDivSelector
+      graphDiv = document.querySelector(graphDivSelector) as HTMLElement,
+      errorFeedbackDiv = document.querySelector(
+        errorFeedbackDivSelector,
       ) as HTMLElement;
 
     /**
@@ -91,22 +92,26 @@ class QFCalculator extends Calculator {
       handles errors that may occur during the validation or instantiation process and provides feedback to the user.
     */
 
-    Form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
       try {
-        if (QFCalculator.validateInputValue(InputsElements) !== "valid")
+        if (QFCalculator.validateInputValue(inputsElements) !== "valid")
           throw "Invalid input";
-        const [A, B, C] = QFCalculator.formatInputsValues(InputsElements),
-          { formula, plotPoits, roots, vertex } = new Quadratic(A, B, C);
-        OutputHeadings.forEach((el) => el.classList.remove("non-display"));
-        FormulaDiv.innerHTML = QFCalculator.convertTexToSvg(formula);
-        RootsDiv.innerHTML = roots
+        const [A, B, C] = QFCalculator.formatInputsValues(inputsElements),
+          { formula, roots, vertex, plotPoits } = new Quadratic(A, B, C);
+        outputHeadings.forEach((el) => el.classList.remove("non-display"));
+        formulaDiv.innerHTML = QFCalculator.convertTexToSvg(
+          LatexFormatter.formulaFormatter(formula),
+        );
+        rootsDiv.innerHTML = LatexFormatter.rootsFormatter(roots)
           .map((str) => QFCalculator.convertTexToSvg(str))
           .join("");
-        CoordinatesDiv.innerHTML = QFCalculator.convertTexToSvg(vertex);
+        coordinatesDiv.innerHTML = QFCalculator.convertTexToSvg(
+          LatexFormatter.criticalPointFormatter(vertex),
+        );
         if (Plotly)
           Plotly.newPlot(
-            GraphDiv,
+            graphDiv,
             [
               {
                 ...plotPoits,
@@ -120,41 +125,45 @@ class QFCalculator extends Calculator {
                 b: 20,
                 t: 5,
               },
-            }
+            },
           );
       } catch (err) {
-        FormulaDiv.innerHTML =
+        formulaDiv.innerHTML =
           QFCalculator.convertTexToSvg("y = ax^2 + bx + c");
-        OutputHeadings.forEach((el) => el.classList.add("non-display"));
-        RootsDiv.innerHTML = "";
-        CoordinatesDiv.innerHTML = "";
-        GraphDiv.innerHTML = "";
-        ErrorFeedbackDiv.textContent =
+        outputHeadings.forEach((el) => el.classList.add("non-display"));
+        rootsDiv.innerHTML = "";
+        coordinatesDiv.innerHTML = "";
+        graphDiv.innerHTML = "";
+        errorFeedbackDiv.textContent =
           err instanceof Error
             ? err.message
             : typeof err === "string"
-            ? err
-            : "Error";
-        Form.addEventListener(
+              ? err
+              : "Error";
+        form.addEventListener(
           "submit",
-          () => (ErrorFeedbackDiv.textContent = null)
+          () => (errorFeedbackDiv.textContent = null),
         );
         throw err;
       }
       OutputElement.scrollIntoView();
     });
 
-    InputsElements.forEach((el, i, arr) => {
+    inputsElements.forEach((el, i, arr) => {
       // Triggers the showFeedback method on the object when this element loses focus
 
       el.addEventListener("blur", () =>
-        Calculator.showFeedback(el, QFCalculator.validateInputValue([el]), Form)
+        Calculator.showFeedback(
+          el,
+          QFCalculator.validateInputValue([el]),
+          form,
+        ),
       );
 
       // Triggers the whenKeyDown method when a key is pressed down while the parent object has focus
 
       el.addEventListener("keydown", (e) =>
-        Calculator.whenKeyDown(e, arr[i + 1])
+        Calculator.whenKeyDown(e, arr[i + 1]),
       );
     });
   }
