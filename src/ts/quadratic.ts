@@ -1,4 +1,4 @@
-const { expand, float, roots: findRoots, run, simplify } = require("algebrite");
+const Algebrite = require("algebrite");
 import MathExpression from "./math-expression";
 import RootsResult from "./roots-result";
 import PlotPoits from "./plot-points";
@@ -26,16 +26,16 @@ class QuadraticFunction {
    */
 
   public constructor(a: string, b: string, c: string) {
-    const formula = expand(`${a} * x^2 + (${b}) * x + (${c})`),
-      roots: any = findRoots(formula),
+    const formula = Algebrite.expand(`${a} * x^2 + (${b}) * x + (${c})`),
+      roots: any = Algebrite.roots(formula),
       deltaFormula = `(${b})^2 - 4 * (${a}) * (${c})`,
-      delta = parseFloat(float(deltaFormula).toString()),
+      delta = parseFloat(Algebrite.float(deltaFormula).toString()),
       vertexFormulas = [
         `-(${b})/(2 * (${a}))`,
         `-(${deltaFormula})/(4 * (${a}))`,
       ],
       vertexCoordinates = vertexFormulas
-        .map((str) => simplify(str))
+        .map((str) => Algebrite.simplify(str))
         .map((obj) => new MathExpression(obj.toString())),
       rootsStr: string[] = roots.toString().replace(/\[|\]/g, "").split(",");
     this.formula = new MathExpression(formula.toString());
