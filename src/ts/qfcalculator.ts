@@ -73,7 +73,7 @@ class QFCalculator extends Calculator {
         (selector) => document.querySelector(selector) as HTMLInputElement,
       ),
       form = document.querySelector(formSelector) as HTMLFormElement,
-      OutputElement = document.querySelector(outputSelector) as HTMLElement,
+      outputElement = document.querySelector(outputSelector) as HTMLElement,
       outputHeadings = document.querySelectorAll(
         outputHsSelctor,
       ) as NodeListOf<HTMLElement>,
@@ -162,7 +162,7 @@ class QFCalculator extends Calculator {
         );
         throw err;
       }
-      OutputElement.scrollIntoView();
+      outputElement.scrollIntoView();
     });
 
     inputsElements.forEach((el, i, arr) => {
