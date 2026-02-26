@@ -4,14 +4,14 @@ class PlotPoits {
   x: number[];
   y: number[];
 
-/**
- * @brief Creates an object with x and y values, both arrays of numbers, where each common index brings a coordinate to be plotted.
- * 
- * @param formula - A string with a mathematical formula.
- * @param xValues - Numerical values of x that must be present in the returned coordinates.
- * 
- * @returns - An object with the properties x and y, both being arrays of numbers where each common index brings a coordinate to draw a graph.
-*/
+  /**
+   * @brief Creates an object with x and y values, both arrays of numbers, where each common index brings a coordinate to be plotted.
+   *
+   * @param formula - A string with a mathematical formula.
+   * @param xValues - Numerical values of x that must be present in the returned coordinates.
+   *
+   * @returns - An object with the properties x and y, both being arrays of numbers where each common index brings a coordinate to draw a graph.
+   */
 
   public constructor(formula: string, ...xValues: (number | null)[]) {
     const expression: any = compile(formula),
@@ -24,7 +24,7 @@ class PlotPoits {
       xMinValue = x1 - extraValue,
       xMaxValue = x2 + extraValue,
       step = abs(xMaxValue - xMinValue) / 100;
-    this.x = range(xMinValue, xMaxValue, step).toArray();
+    this.x = range(xMinValue, xMaxValue + step, step).toArray();
     this.y = this.x.map((x) => expression.evaluate({ x }));
   }
 }
