@@ -2,10 +2,13 @@ import MathExpression from "./math-expression";
 import RootsResult from "./roots-result";
 
 class LatexFormatter {
+  private constructor() {}
+
   /**
    * Formats a function expression into a LaTeX string prefixed with "y =".
    *
    * @param formula A MathExpression representing the function.
+   * 
    * @returns A LaTeX-formatted string representing the function in the form "y = ...".
    */
 
@@ -22,12 +25,13 @@ class LatexFormatter {
    * (e.g., x₁, x₂) including exact and approximate representations when applicable.
    *
    * @param roots A RootsResult object describing the real roots of the function.
+   * 
    * @returns An array of LaTeX-formatted strings representing the roots.
    */
 
   public static rootsFormatter(roots: RootsResult): string[] {
     if (roots.type != "real")
-      return ["\\text{This quadratic function doesn't have any real root.}"];
+      return ["\\text{This function doesn't have any real root.}"];
     const rootsLatex = roots.values.map((obj) => obj.toLatex()),
       rootsNumericString = roots.values.map((obj) => obj.toNumericString()),
       formattedRoots = rootsNumericString.map((str, i) => {
@@ -48,11 +52,14 @@ class LatexFormatter {
    *
    * @param point An object with two MathExpression objects representing the x and y coordinates
    *              of the critical point.
-   * 
+   *
    * @returns A LaTeX-formatted string representing the critical point coordinates.
    */
 
-  public static criticalPointFormatter(point: { x: MathExpression; y: MathExpression }): string {
+  public static criticalPointFormatter(point: {
+    x: MathExpression;
+    y: MathExpression;
+  }): string {
     return `\\left( ${point.x.toLatex()}, ${point.y.toLatex()} \\right)`;
   }
 }
