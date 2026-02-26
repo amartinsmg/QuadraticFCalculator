@@ -27,18 +27,18 @@ abstract class Calculator {
     ...nonZero: string[]
   ): string {
     for (let el of els) {
-      const VALUE: string = Calculator.getInputValue(el),
-        FractionRegEx = /^-?\d+[/][1-9]\d*$/,
-        NumberRegEx = /^-?\d*[.]?\d+$/,
-        ZeroFractionRegEx = /^-?0+[/]/,
-        ZeroNumberRegEx = /^-?0*[.]?0+$/,
-        VALID_VALUE = fraction
-          ? FractionRegEx.test(VALUE) || NumberRegEx.test(VALUE)
-          : NumberRegEx.test(VALUE),
-        ZERO_NUMBER =
-          ZeroFractionRegEx.test(VALUE) || ZeroNumberRegEx.test(VALUE);
-      if (!VALID_VALUE) return "Enter a valid number!";
-      if (nonZero.includes(el.name) && ZERO_NUMBER)
+      const value: string = Calculator.getInputValue(el),
+        fractionRegEx = /^-?\d+[/][1-9]\d*$/,
+        numberRegEx = /^-?\d*[.]?\d+$/,
+        zeroFractionRegEx = /^-?0+[/]/,
+        zeroNumberRegEx = /^-?0*[.]?0+$/,
+        validValue = fraction
+          ? fractionRegEx.test(value) || numberRegEx.test(value)
+          : numberRegEx.test(value),
+        zeroNumber =
+          zeroFractionRegEx.test(value) || zeroNumberRegEx.test(value);
+      if (!validValue) return "Enter a valid number!";
+      if (nonZero.includes(el.name) && zeroNumber)
         return "Enter a non-zero number!";
     }
     return "valid";
@@ -58,18 +58,18 @@ abstract class Calculator {
     feedbackMessage: string,
     parentForm: HTMLFormElement
   ): void {
-    const ParentEl = el.parentElement as HTMLElement;
+    const parentEl = el.parentElement as HTMLElement;
     if (feedbackMessage !== "valid" && !el.classList.contains("invalid-input")) {
-      const InvalidMessageDiv = document.createElement("div"),
+      const invalidMessageDiv = document.createElement("div"),
         removeInvalidMessage = () => {
           el.classList.remove("invalid-input");
-          InvalidMessageDiv.remove();
+          invalidMessageDiv.remove();
         },
         once = true;
       el.classList.add("invalid-input");
-      InvalidMessageDiv.classList.add("invalid-feedback");
-      InvalidMessageDiv.textContent = feedbackMessage;
-      ParentEl.appendChild(InvalidMessageDiv);
+      invalidMessageDiv.classList.add("invalid-feedback");
+      invalidMessageDiv.textContent = feedbackMessage;
+      parentEl.appendChild(invalidMessageDiv);
       el.addEventListener("input", removeInvalidMessage, { once });
       parentForm.addEventListener("reset", removeInvalidMessage, { once });
     }
@@ -90,7 +90,6 @@ abstract class Calculator {
     if (e.key === "Enter") {
       if (nextEl) {
         nextEl.focus();
-        nextEl.value = "";
         e.preventDefault();
       }
       return void 0;
