@@ -97,8 +97,8 @@ class QFCalculator extends Calculator {
       try {
         if (QFCalculator.validateInputValue(inputsElements) !== "valid")
           throw "Invalid input";
-        const [A, B, C] = QFCalculator.formatInputsValues(inputsElements),
-          { formula, roots, vertex, plotPoits } = new Quadratic(A, B, C);
+        const [a, b, c] = QFCalculator.formatInputsValues(inputsElements),
+          { formula, roots, vertex, plotPoits } = new Quadratic(a, b, c);
         outputHeadings.forEach((el) => el.classList.remove("non-display"));
         formulaDiv.innerHTML = QFCalculator.convertTexToSvg(
           LatexFormatter.formulaFormatter(formula),
@@ -109,24 +109,40 @@ class QFCalculator extends Calculator {
         coordinatesDiv.innerHTML = QFCalculator.convertTexToSvg(
           LatexFormatter.criticalPointFormatter(vertex),
         );
-        if (Plotly)
-          Plotly.newPlot(
-            graphDiv,
-            [
+        if (Plotly) {
+          const data = [
               {
                 ...plotPoits,
                 mode: "line",
               },
             ],
-            {
+            template = {
+              autosize: true,
               margin: {
-                l: 60,
-                r: 5,
+                l: 20,
+                r: 20,
                 b: 20,
-                t: 5,
+                t: 20,
+                pad: 4,
               },
-            },
-          );
+              font: { color: "white" },
+              paper_bgcolor: "#1e1e1e",
+              plot_bgcolor: "#1e1e1e",
+              xaxis: {
+                automargin: true,
+                gridcolor: "#444",
+                linecolor: "#666",
+                tickcolor: "#666",
+              },
+              yaxis: {
+                automargin: true,
+                gridcolor: "#444",
+                linecolor: "#666",
+                tickcolor: "#666",
+              },
+            };
+          Plotly.newPlot(graphDiv, data, template);
+        }
       } catch (err) {
         formulaDiv.innerHTML =
           QFCalculator.convertTexToSvg("y = ax^2 + bx + c");
