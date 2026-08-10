@@ -1,4 +1,4 @@
-const { abs, compile, max, min, range } = require("mathjs");
+import { abs, compile, max, min, range } from "mathjs";
 
 class PlotPoits {
   x: number[];
@@ -24,7 +24,7 @@ class PlotPoits {
       xMinValue = x1 - extraValue,
       xMaxValue = x2 + extraValue,
       step = abs(xMaxValue - xMinValue) / 100;
-    this.x = range(xMinValue, xMaxValue + step, step).toArray();
+    this.x = range(xMinValue, xMaxValue + step, step).toArray() as number[];
     this.y = this.x.map((x) => expression.evaluate({ x }));
   }
 }
