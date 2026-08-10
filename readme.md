@@ -6,7 +6,23 @@ This project was originally implemented in plain JavaScript and later refactored
 
 ---
 
-## Purpose of the project
+
+## 💻 Technologies used
+
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6)
+![Vite](https://img.shields.io/badge/Vite-646CFF)
+![Yarn](https://img.shields.io/badge/Yarn-2C8EBB)
+![Algebrite](https://img.shields.io/badge/Algebrite-F7DF1E)
+![MathJS](https://img.shields.io/badge/MathJS-DC3912)
+![Plotly](https://img.shields.io/badge/Plotly-0E1012)
+![MathJax](https://img.shields.io/badge/MathJax-008200)
+
+---
+
+## 🎯 Purpose of the project
 
 The goal of this project is not only to calculate a quadratic function, but to practice applying OOP concepts to a real interactive application.
 Instead of organizing the code around actions (calculate, render, plot), the system was redesigned around **domain entities**.
@@ -23,7 +39,7 @@ This improves maintainability, readability and extensibility of the code.
 
 ---
 
-## OOP Design
+## 🧩 OOP Design
 
 The project now follows a clearer domain-oriented architecture with symbolic computation support:
 
@@ -57,7 +73,7 @@ formatter classes.
 
 ---
 
-## Symbolic Computation First
+## 🧮 Symbolic Computation First
 
 A key architectural decision was preserving symbolic computation.
 
@@ -76,7 +92,7 @@ This keeps the symbolic and numeric layers clearly separated.
 
 ---
 
-## Design Principles Applied
+## ✨ Design Principles Applied
 
 ### Encapsulation
 
@@ -106,7 +122,7 @@ and mathematical computation.
 
 ---
 
-## How it works
+## ⚙️ How it works
 
 1. The user inputs the coefficients a, b and c.
 2. `QFCalculator` validates the input and creates a `QuadraticFunction`object.
@@ -123,19 +139,7 @@ and mathematical computation.
 
 ---
 
-## Technologies used
-
-- TypeScript
-- Webpack
-- Babel
-- Algebrite
-- MathJS
-- Plotly.js
-- MathJax
-
----
-
-## How to run the project
+## 🚀 How to run the project
 
 1. Clone this repository
 2. Install dependencies:
@@ -154,13 +158,13 @@ Webpack Dev Server will start and the application will be available in your brow
 
 ---
 
-## License
+## 📜 License
 
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE.md) file for details.
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome!
 If you find a bug or have a feature request, feel free to open an issue or submit a pull request.
