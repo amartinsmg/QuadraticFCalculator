@@ -1,3 +1,10 @@
+@import url("elements.css");
+@import url("header.css");
+@import url("inputs.css");
+@import url("outputs.css");
+@import url("footer.css");
+@import url("responsive.css");
+
 * {
   margin: 0;
   padding: 0;
@@ -18,9 +25,3 @@ html, body {
   text-align: center;
 }
 
-@import url("elements.css");
-@import url("header.css");
-@import url("inputs.css");
-@import url("outputs.css");
-@import url("footer.css");
-@import url("responsive.css");
